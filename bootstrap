@@ -324,6 +324,9 @@ install_homebrew() {
 }
 
 setup_gitconfig() {
+    git config --global init.defaultBranch master
+    git config --global pull.rebase false  # merge (the default strategy)
+
   # if [ ! -f ~/.gitconfig.user ]; then
     printf "What is your GitHub username? > "
     read github_user
