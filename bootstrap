@@ -395,8 +395,11 @@ main() {
     setup_ssh_keys
     clear_password_policies
     change_password
-
-    
 }
 
-main
+if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+    echo "Script is being executed directly, not sourced."
+    main
+else
+    echo "Script is being sourced."
+fi
