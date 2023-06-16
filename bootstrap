@@ -328,7 +328,12 @@ setup_gitconfig() {
     git config --global pull.rebase false  # merge (the default strategy)
     git config --global pull.rebase true   # rebase
     git config --global pull.ff only       # fast-forward only
+
+    # https://stackoverflow.com/a/44549734
     git config --global core.editor "code --wait"  # set visual studio code as default editor
+    git config --global mergetool.vscode.cmd 'code --wait --merge $REMOTE $LOCAL $BASE $MERGED'
+    git config --global diff.tool vscode
+    git config --global difftool.vscode.cmd 'code --wait --diff $LOCAL $REMOTE'
 
   # if [ ! -f ~/.gitconfig.user ]; then
     printf "What is your GitHub username? > "
