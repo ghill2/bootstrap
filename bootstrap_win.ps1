@@ -10,7 +10,9 @@ if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
     }
 }
 
-
+# Enable SMB
+Write-Output "Enabling SMB..."
+Enable-WindowsOptionalFeature -Online -FeatureName "SMB1Protocol" -NoRestart
 
 # Turn off UAC
 Write-Output "Turning off UAC..."
