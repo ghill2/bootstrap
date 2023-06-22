@@ -72,10 +72,13 @@ Get-Service sshd | Start-Service
 # if($sshd.Status -eq "Stopped") {$sshd | Start-Service}
 # if($sshd.StartType -eq "Disabled") {$sshd | Set-Service -StartupType Automatic }
 
+# This command enables PowerShell remoting and allows the current session to have the necessary privileges for running commands with different user credentials.
+enable-psremoting -force
 
 # Get the PowerShell version: Get-Host | Select-Object Version
 # NOTE: the path it version 1.0 but the powershell.exe will use the upgraded version after using ```Install-Module -Name PowerShellGet```
 New-ItemProperty -Path "HKLM:\SOFTWARE\OpenSSH" -Name DefaultShell -Value "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe" -PropertyType String -Force
+
 # CAUSED SSH in VSCODE TO CRASH. KEEP AS POWERSHELL
 # New-ItemProperty -Path "HKLM:\SOFTWARE\OpenSSH" -Name DefaultShell -Value "C:\Program Files\Git\bin\bash.exe" -PropertyType String -Force
 
