@@ -13,6 +13,16 @@ if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
 # Enable SMB
 Write-Output "Enabling SMB..."
 Enable-WindowsOptionalFeature -Online -FeatureName "SMB1Protocol" -NoRestart
+Set-NetFirewallRule -DisplayName "File and Printer Sharing (SMB-In)" -Profile Private -Enabled True
+Set-NetFirewallRule -DisplayName "File and Printer Sharing (SMB-In)" -Profile Public -Enabled True  # CAUTION!
+
+# Install pyenv - using package manager
+# Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/pyenv-win/pyenv-win/master/pyenv-win/install-pyenv-win.ps1" -OutFile "./install-pyenv-win.ps1"; &"./install-pyenv-win.ps1"
+# refreshenv
+
+# Install poetry - using package manager
+# (Invoke-WebRequest -Uri https://install.python-poetry.org -UseBasicParsing).Content | py -
+# refreshenv
 
 # Turn off UAC
 Write-Output "Turning off UAC..."
@@ -38,9 +48,11 @@ if($capability.State -ne "Installed") {
 } else {
     Write-Information "OpenSSH client installed"
 }
-$sshAgent = Get-Service ssh-agent
-if($sshAgent.Status -eq "Stopped") {$sshAgent | Start-Service}
-if($sshAgent.StartType -eq "Disabled") {$sshAgent | Set-Service -StartupType Automatic }
+Get-Service ssh-agent | Set-Service -StartupType Automatic
+Get-Service ssh-agent | Start-Service
+# $sshAgent = Get-Service ssh-agent
+# if($sshAgent.Status -eq "Stopped") {$sshAgent | Start-Service}
+# if($sshAgent.StartType -eq "Disabled") {$sshAgent | Set-Service -StartupType Automatic }
 
 # Enable SSH server
 Write-Output "Installing OpenSSH.Server..."
@@ -53,9 +65,13 @@ if($capability.State -ne "Installed") {
 } else {
     Write-Information "OpenSSH server installed"
 }
-$sshd = Get-Service sshd
-if($sshd.Status -eq "Stopped") {$sshd | Start-Service}
-if($sshd.StartType -eq "Disabled") {$sshd | Set-Service -StartupType Automatic }
+Get-Service sshd | Set-Service -StartupType Automatic
+Get-Service sshd | Start-Service
+
+# $sshd = Get-Service sshd
+# if($sshd.Status -eq "Stopped") {$sshd | Start-Service}
+# if($sshd.StartType -eq "Disabled") {$sshd | Set-Service -StartupType Automatic }
+
 
 # Get the PowerShell version: Get-Host | Select-Object Version
 # NOTE: the path it version 1.0 but the powershell.exe will use the upgraded version after using ```Install-Module -Name PowerShellGet```
@@ -77,7 +93,11 @@ Set-Item -Path WSMan:\localhost\MaxEnvelopeSizeKb -Value 16384
 Enable-PSRemoting -SkipNetworkProfileCheck -Force
 Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
 # Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Unrestricted -Force;
-Install-Module cChoco;
+# Install-Module cChoco;  # using install script for uninstallation support
+
+
+
+
 
 # Set the hostname
 $hostname = Read-Host -Prompt 'Enter the new hostname'
