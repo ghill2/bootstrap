@@ -76,6 +76,9 @@ Get-Service sshd | Start-Service
 # Get the PowerShell version: Get-Host | Select-Object Version
 # NOTE: the path it version 1.0 but the powershell.exe will use the upgraded version after using ```Install-Module -Name PowerShellGet```
 New-ItemProperty -Path "HKLM:\SOFTWARE\OpenSSH" -Name DefaultShell -Value "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe" -PropertyType String -Force
+# CAUSED SSH in VSCODE TO CRASH. KEEP AS POWERSHELL
+# New-ItemProperty -Path "HKLM:\SOFTWARE\OpenSSH" -Name DefaultShell -Value "C:\Program Files\Git\bin\bash.exe" -PropertyType String -Force
+
 # Write default config NOT NEEDED! password authentication enabled by default.
 # $file = "C:\ProgramData\ssh\sshd_config"
 # if (-not (Test-Path -Path $file)) {
@@ -95,14 +98,12 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManage
 # Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Unrestricted -Force;
 # Install-Module cChoco;  # using install script for uninstallation support
 
-
-
-
-
 # Set the hostname
 $hostname = Read-Host -Prompt 'Enter the new hostname'
 $computer = Get-WmiObject -Class Win32_ComputerSystem
 $computer.Rename($hostname)
+
+
 
 
 # Install Powershell 5: not needed, Windows 11 ships with version 5.1
